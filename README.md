@@ -36,3 +36,4 @@ python3 scripts/cutout-wash-states.py assets/reference/wash-open.png public/imag
 python3 scripts/cutout-wash-states.py assets/reference/wash-compact.png public/images/story/wash/compact
 ```
 # laundry-templates
+# laundry_demo
