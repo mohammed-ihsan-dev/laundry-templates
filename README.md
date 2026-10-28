@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Clean Thread
 
-## Getting Started
+A scroll-driven website for a premium laundry service. One shirt goes through the whole wash cycle as you scroll. It's built with Next.js 16 (App Router), TypeScript, Tailwind CSS 4 and GSAP ScrollTrigger.
 
-First, run the development server:
+- Creative brief: [docs/creative-direction.md](docs/creative-direction.md)
+- How it's built, the asset status and known gaps: [docs/architecture.md](docs/architecture.md)
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run build && npm run start
+npm run lint
+npx tsc --noEmit   # run after a build: Next generates route types
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `NEXT_PUBLIC_BOOKING_URL`: where **Book a Pickup** sends people, with the area passed as `?area=`. If it's unset, the form says that online booking isn't connected and sends nothing.
+- `src/content/site.ts`: brand name (the current name is a working title), turnaround, contact details, hours, service areas, stats and guarantees. Each value stays visibly marked as a placeholder until `confirmed: true`.
+- `src/content/services.ts`: service list and prices. Prices show as placeholders until an `amount` is set.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Assets
 
-## Learn More
+The approved stills are in `public/images/story/`. The stain layers in `derived/` are generated from `dirty-shirt.png`:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+python3 scripts/derive-stain-layers.py public/images/story/dirty-shirt.png   # needs Pillow
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The wet-shirt states for the wash are cut out from the untouched references in `assets/reference/`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+python3 scripts/cutout-wash-states.py assets/reference/wash-open.png public/images/story/wash/open        # needs numpy, scipy, Pillow
+python3 scripts/cutout-wash-states.py assets/reference/wash-compact.png public/images/story/wash/compact
+```
+# laundry-templates
